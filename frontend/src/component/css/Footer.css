@@ -1,0 +1,79 @@
+.footer {
+    background-color: #3b2a1a;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    height:70px;
+  }
+  
+  .footer-left {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .college-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .college-name {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .college-name:hover {
+    text-decoration: none;
+    color:cadetblue;
+  }
+  
+  .footer-center {
+    text-align: center;
+  }
+  
+  .footer-center p {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-icons a img {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .social-icons .f {
+   width: 27px;
+   height: 27px;;
+  }
+
+  .social-icons .y {
+    width: 26px;
+    height: 25px;;
+   }
+
+   .social-icons .t {
+    width: 25px;
+    height: 25px;
+   }
+
+   .social-icons .i {
+    width: 27px;
+    height: 27px;;
+   }
+  
+  .social-icons a img:hover {
+    transform: scale(1.2);
+  }
+  

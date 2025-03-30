@@ -1,0 +1,57 @@
+.register-block {
+    float: left;
+    width: 100%;
+    padding: 50px 0;
+    background: url('/public/code_image/s1.jpg') no-repeat center center/cover; /* Add your dark image here */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-attachment: fixed; /* Parallax effect if needed */
+    color: #fff; /* Make text readable against a darker background */
+  }
+  
+  .container {
+    background: rgba(89, 83, 110, 0.9); /* Semi-transparent light gray */
+    border-radius: 10px;
+    width: 30%;
+    height: auto;
+  }
+  
+  .register-sec {
+    padding: 50px 30px;
+    position: relative;
+  }
+  
+  .register-sec h2 {
+    margin-bottom: 30px;
+    font-weight: 800;
+    font-size: 30px;
+    color: #ffffff; /* Adjust text color to contrast with dark background */
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .register-sec h2:after {
+    content: " ";
+    width: 100px;
+    height: 5px;
+    background: #6ec6ff;
+    display: block;
+    margin-top: 20px;
+    border-radius: 3px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .btn-login {
+    background: #0069c0;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-login:hover {
+    background: #005bb5; /* Slightly darker blue on hover */
+    transform: scale(1.05);
+  }
+  

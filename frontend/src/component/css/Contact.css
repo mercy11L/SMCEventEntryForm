@@ -1,0 +1,145 @@
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 77.5vh;
+    background: url('/public/code_image/s2.jpg') no-repeat center center/cover;
+    padding: 40px 0;
+    position: relative; /* Needed for absolute positioning of the overlay */
+  z-index: 1;
+}
+.contact-container::before {
+    content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Adjust opacity to control darkness */
+  z-index: -1;
+}
+
+.contact-box {
+    display: flex;
+    background: white;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.contact-info {
+    background: #4360B5;
+    color: white;
+    padding: 40px;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.contact-info h2 {
+    margin-top: 2px;
+    margin-bottom:50px;
+    margin-left: 10px;
+}
+
+.contact-info p {
+    margin:10px ;
+    font-size:20px;
+}
+
+.contact-info i {
+    margin-right: 10px;
+}
+
+.social-icons {
+    margin-top: 20px;
+}
+
+.social-icons i {
+    font-size: 28px;
+    margin-right: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.contact-form {
+    padding: 40px;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.contact-form h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Input Fields */
+.input-group {
+    display: flex;
+    gap: 21px;
+    margin-bottom: 15px;
+}
+
+.input-group div {
+    position: relative;
+    flex: 1;
+}
+
+/* Icons Inside Input Fields */
+.input-group i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #555;
+}
+
+/* Inputs with Icon Spacing */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-height: 100px;
+}
+
+/* Submit Button */
+button {
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 25%;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+}
+
+/* Error Message Styling */
+.error-text {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: bold;
+}

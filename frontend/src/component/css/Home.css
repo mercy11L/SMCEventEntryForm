@@ -1,0 +1,73 @@
+#home-section {
+  position: relative;
+  width: 100%;
+  height: 77.5vh; /* Full screen height */
+  overflow: hidden;
+}
+
+.carousel {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures full image display without cropping */
+  filter: brightness(0.6); /* Slightly dims the images */
+}
+
+.content {
+  position: absolute;
+  top: 45%;
+  left: 22%;
+  text-align: center;
+  color: white;
+}
+
+.content h1{
+  width:100%;
+}
+
+.register-btn {
+  background-color:bisque;
+  color: black;
+  padding: 10px 20px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.register-btn:hover{
+  text-decoration: none;
+  background-color:cadetblue;
+  border:2px solid black;
+  color:black;
+}
+
+.dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dots input {
+  margin: 5px;
+  cursor: pointer;
+}

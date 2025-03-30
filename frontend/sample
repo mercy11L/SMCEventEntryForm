@@ -1,0 +1,43 @@
+{/* <select class="form-multi-select" id="departments" multiple data-coreui-search="global">
+  <optgroup label="Science">
+    <option value="BioInformatics">BioInformatics</option>
+    <option value="Biotechnology">Biotechnology</option>
+    <option value="Botany">Botany</option>
+    <option value="Chemistry">Chemistry</option>
+    <option value="ComputerScience">Computer Science</option>
+    <option value="Economics">Economics</option>
+    <option value="Mathematics">Mathematics</option>
+    <option value="Physics">Physics</option>
+    <option value="Psychology">Psychology</option>
+    <option value="Zoology">Zoology</option>
+  </optgroup>
+  <optgroup label="Commerce">
+    <option value="Commerce-Gen-ShiftI">Commerce - General - Shift I</option>
+    <option value="Commerce-Gen-ShiftII">Commerce - General - Shift II</option>
+    <option value="Commerce-CorpSec">Commerce - Corporate Secretaryship</option>
+    <option value="Commerce-AccFin">Commerce - Accounting & Finance</option>
+    <option value="Commerce-Honours">Commerce - Honours</option>
+    <option value="Commerce-BusAdmin">Commerce - Business Administration</option>
+    <option value="Commerce-Banking">Commerce - Banking, Finance and Entrepreneurship</option>
+  </optgroup>
+  <optgroup label="Humanities & Social Sciences">
+    <option value="FineArts">Fine Arts</option>
+    <option value="History">History</option>
+    <option value="HRM">Human Resource Management</option>
+    <option value="IntlStudies">International Studies</option>
+    <option value="Languages-Tamil">Languages - Tamil</option>
+    <option value="Languages-Hindi">Languages - Hindi</option>
+    <option value="Languages-French">Languages - French</option>
+    <option value="Languages-Sanskrit">Languages - Sanskrit</option>
+    <option value="PublicRelations">Public Relations</option>
+    <option value="SocialWork-UG">Social Work - UG</option>
+    <option value="SocialWork-PG">Social Work - PG</option>
+    <option value="Sociology">Sociology</option>
+    <option value="ValueEducation">Value Education</option>
+  </optgroup>
+  <optgroup label="Vocational">
+    <option value="Vocational-Banking">Vocational - Banking, Financial Services and Insurance</option>
+    <option value="Vocational-FoodProcessing">Vocational - Food Processing and Quality Control</option>
+    <option value="Vocational-SustainableEnergy">Vocational - Sustainable Energy Management</option>
+  </optgroup>
+</select> */}

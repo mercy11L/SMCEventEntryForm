@@ -1,0 +1,86 @@
+.about-container {
+  width: 100vw;
+  min-height: 100vh;
+  background-image: url("/public/code_image/s1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers horizontally */
+  justify-content: center; /* Centers vertically */
+  padding: 40px 20px;
+  position: relative; /* Needed for absolute positioning of the overlay */
+  z-index: 1;
+}
+
+.about-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* Adjust opacity to control darkness */
+  z-index: -1; /* Keeps the overlay behind content */
+}
+
+.about-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 80%; /* Adjust width as needed */
+  max-width: 900px; /* Ensures it doesn't get too wide */
+}
+
+
+  .about-image {
+    width: 300px;
+    height: 200px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Background images */
+  .image1 {
+    background-image: url("/public/code_image/s3.jpg"); /* Adjust path */
+  }
+  
+  .image2 {
+    background-image: url("/public/code_image/s2.jpg"); /* Adjust path */
+  }
+  .image3 {
+    background-image: url("/public/code_image/s3.jpg"); /* Adjust path */
+  }
+  
+  .image4 {
+    background-image: url("/public/code_image/s1.jpg"); /* Adjust path */
+  }
+  
+  
+  .about-text {
+    max-width: 55%;
+  }
+  
+  .about-text h2 {
+    font-size: 24px;
+    color: #00796b;
+    margin-bottom: 10px;
+  }
+  
+  .about-text p {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.9;
+  }
+  
+  /* Reverse section for alternating layout */
+  .reverse {
+    flex-direction: row-reverse;
+  }

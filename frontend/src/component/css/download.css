@@ -1,0 +1,42 @@
+/* Container styling to maintain full height */
+.outer{
+    margin:28px;
+}
+.download-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    padding: 20px;  /* Space around the card */
+  }
+  
+  /* Card styling with shadow and spacing */
+  .download-card {
+    max-width: 400px;
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 10px; /* Ensures spacing around the card */
+  }
+  
+  /* Title color */
+  .card-title {
+    margin-bottom: 1rem;
+    color: #007bff;
+  }
+  
+  /* Event ID text styling */
+  .event-id {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Button styling */
+  .download-btn {
+    width: 100%;
+    margin-bottom: 0.75rem;
+  }
+  

@@ -1,0 +1,178 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('/public/code_image/s1.jpg') no-repeat center center/cover; /* Add your dark image here */
+    background-size: cover; /* Ensure the image covers the entire background */
+    background-attachment: fixed;
+  }
+  
+  .form-container {
+    max-width: 60%;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 8px;
+    
+    background: rgba(97, 91, 118, 0.9);
+  }
+  .Select__menu {
+    z-index: 9999 !important;
+  }
+  
+  .footer {
+    z-index: 1;
+    position: relative;
+  }
+  
+
+  .error-message {
+    color: darkred;
+    /* text-shadow: 1px 0px 0px rgb(66, 64, 64);
+    font-weight: bold; */
+    text-shadow: 0.5px 0px 0px red;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color:white
+    /* color: #333; */
+  }
+  
+  .form-input,
+  .form-select,
+  .form-file {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  /* Increase Select height */
+/* .form-select .select__control,
+#form-select .select__control {
+  min-height: 10px !important;
+  padding: 0 !important;
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  font-size: 1rem;
+} */
+
+input[type="file"]{background: white;  /* Keeps background white */
+color: black;
+}
+
+/* Adjust spacing inside select */
+.form-select .select__control .select__value-container,
+#form-select .select__control .select__value-container {
+  padding: 0.75rem !important; /* Increase padding for a larger feel */
+}
+
+  
+  .form-input:focus,
+  .form-select:focus,
+  .form-file:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .form-radio-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .form-radio-group label {
+    display: flex;
+    align-items: center;
+    font-weight: normal;
+    gap: 0.5rem; /* Adds space between button and label */
+  }
+  
+  .form-radio-group input[type="radio"] {
+    width: 20px; /* Make the radio button bigger */
+    height: 20px;
+    margin-right: 0.5rem; /* Adds space between yes and no buttons */
+  }
+  
+  .form-submit {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.75rem 1.5rem;
+    margin:5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .form-submit:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    label {
+      font-size: 0.9rem;
+    }
+  
+    .form-input,
+    .form-select,
+    #form-select,
+    .form-file {
+      font-size: 0.9rem;
+      padding: 0.5rem;
+    }
+  
+    .form-submit {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
+  }
+  .ql-size-10px { font-size: 10px; }
+.ql-size-12px { font-size: 12px; }
+.ql-size-14px { font-size: 14px; }
+.ql-size-18px { font-size: 18px; }
+.ql-size-24px { font-size: 24px; }
+.ql-size-32px { font-size: 32px; }
+
+.ql-container {
+  background-color: #fff !important; /* White background */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Smooth corners */
+  padding: 10px; /* Add some padding */
+}
+
+.ql-toolbar {
+  background-color: #f9f9f9; /* Light grey toolbar */
+  border: 1px solid #ccc;
+  border-radius: 4px 4px 0 0; /* Rounded corners only on top */
+}
+
+.form-row {
+  display: flex;
+  gap: 2rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+  margin-bottom: 2rem;
+}
+
+
