@@ -8,11 +8,13 @@ const { JSDOM } = require("jsdom");
 const numbering = require("../utils/numbering");
 const styles = require("../utils/styles");
 const { formatDate } = require("../utils/dateHelpers");
+const { exec } = require("child_process");
 const {Document,Paragraph,ImageRun,PageBreak,AlignmentType,WidthType,TextRun,Packer,Table,Header,Footer, TableCell, TableRow} = require("docx");
 
 router.get("/download/:id", async (req, res) => {
     try {
         const eventId = req.params.id;
+        const fileType = req.query.type || "docx";
         const event = await detModel.findById(eventId);
 
         if (!event) {
@@ -320,7 +322,7 @@ router.get("/download/:id", async (req, res) => {
                                         new ImageRun({
                                             type:"png",
                                             data: wmark,  //watermark image
-                                            transformation: { width: 460, height: 380 },
+                                            transformation: { width: 440, height: 370 },
                                             floating: {
                                                 horizontalPosition: { align: "center" },
                                                 verticalPosition: { align: "center" },
@@ -443,20 +445,42 @@ router.get("/download/:id", async (req, res) => {
 
         // Generate the document buffer
         const buffer = await Packer.toBuffer(doc);
-        const fileName = `Event_Report_${eventId}.docx`;
-        const filePath = path.join(__dirname, "../public/files", fileName);
-        fs.writeFileSync(filePath, buffer);
+        const docxPath = path.join(__dirname, "../public/wordFiles", `Event_Report_${eventId}.docx`);
+        const pdfPath = path.join(__dirname, "../public/pdfFiles", `Event_Report_${eventId}.pdf`);
+        fs.writeFileSync(docxPath, buffer);
 
-            res.set({
-                "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "Content-Disposition": "attachment; filename=Event_Report.docx",
-                "Content-Length": buffer.length,
-            })
-            res.send(Buffer.from(buffer));
-    }catch (error) {
+        const convertToPDF = (inputDoc, outputPdf) => {
+            return new Promise((resolve, reject) => {
+                const command = `powershell -ExecutionPolicy Bypass -File ./convert.ps1 "${inputDoc}" "${outputPdf}"`;
+                exec(command, (error, stdout, stderr) => {
+                    if (error || stderr) {
+                        console.error("PDF conversion error:", error || stderr);
+                        return reject("Error converting to PDF");
+                    }
+                    console.log("Successfully converted to PDF!");
+                    resolve();
+                });
+            });
+        };
+
+        await convertToPDF(docxPath, pdfPath);
+
+        const filePath = fileType === "pdf" ? pdfPath : docxPath;
+        const mimeType =
+            fileType === "pdf"
+                ? "application/pdf"
+                : "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+        res.set({
+            "Content-Type": mimeType,
+            "Content-Disposition": `attachment; filename=Event_Report.${fileType}`,
+        });
+
+        res.sendFile(filePath);
+    } catch (error) {
         console.error("Error generating document:", error);
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
-module.exports=router;
+module.exports = router;

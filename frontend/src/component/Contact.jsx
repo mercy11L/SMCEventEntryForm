@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import './css/Contact.css';
 import axios from "axios";
@@ -13,7 +14,7 @@ const Contact = () => {
   });
 
   const [errors, setErrors] = useState({});
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: '' }); // Clear error when typing
@@ -45,6 +46,7 @@ const Contact = () => {
       axios.post('http://localhost:5000/contact', formData)
         .then((response) => {
           alert('Form submitted successfully!');
+          navigate("/");
           setFormData({ Name: '', DeptName: '', email: '', mobile: '', message: '' });
         })
         .catch((error) => {
@@ -85,7 +87,7 @@ const Contact = () => {
                     type="text"
                     name="DeptName"
                     placeholder="Department Name"
-                    value={formData.lastName}
+                    value={formData.DeptName}
                     onChange={handleChange}
                   />
                   {errors.DeptName && <p className="error-text">{errors.DeptName}</p>}

@@ -1,39 +1,75 @@
 .events-container {
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.h2 {
     text-align: center;
-    padding: 20px;
+    color: white;
+    font-weight: bolder;
+    margin-bottom: 20px;
 }
 
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+.hi {
+    background: url('/public/code_image/s1.jpg') no-repeat center center/cover;
+    padding: 40px 0;
+    position: relative;
+    z-index: 1;
 }
 
-.event-card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
+.hi::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
 }
 
-.event-card:hover {
-    transform: scale(1.05);
+.events-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.event-card h3 {
-    color: #2c3e50;
+.events-table th, .events-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
 }
 
-.event-card a {
+.events-table th {
+    background-color: #4360B5;
+    color: white;
+}
+
+.events-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.events-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.view-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-size: 16px;
+    white-space: nowrap;
     display: inline-block;
-    margin-top: 10px;
-    text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
+    width: auto;
+    text-align: center;
 }
 
-.event-card a:hover {
-    text-decoration: underline;
+.view-btn:hover {
+    background-color: #0056b3;
 }

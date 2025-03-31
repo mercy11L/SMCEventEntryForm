@@ -4,8 +4,8 @@ const conModel = require('../models/ContModel'); // Import the Mongoose model
 
 router.post('/contact', async (req, res) => {
   try {
-    const { name, dname, mail, mob, msg } = req.body;
-    const newContact = new conModel({ name, dname, mail, mob, msg });
+    const { Name, DeptName, email, mobile, message } = req.body;
+    const newContact = new conModel({ name:Name, dname : DeptName, mail : email, mob: mobile, msg: message});
     await newContact.save();
     res.status(201).send({ message: 'Contact saved successfully!' });
   } catch (error) {

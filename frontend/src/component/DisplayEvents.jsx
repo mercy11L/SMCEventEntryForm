@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./css/DisplayEvents.css"; // Import CSS file for styling
 import { useNavigate } from 'react-router-dom';
-import { Alogout } from './services/Auth';
 import Header from "./Header.jsx";
+import "./css/ViewReport.css";
 
 export default function DisplayEvents() {
     const [events, setEvents] = useState([]);
@@ -19,30 +18,45 @@ export default function DisplayEvents() {
             });
     }, []);
 
-    const logoutUser= ()=>{
-            Alogout();
-            navigate("/")
-        }
-
     return (
         <>
-        <Header logoutUser={logoutUser}/>
-        <div className="events-container">
-            <h2>Event Details</h2>
-            <div className="grid-container">
-                {events.map(event => (
-                    <div key={event._id} className="event-card">
-                        <h3>{event.name}</h3>
-                        <p><strong>Start Date:</strong> {event.eventDate}</p>
-                        <p><strong>End Date:</strong> {event.endDate}</p>
-                        <p><strong>Coordinator:</strong> {event.nc}</p>
-                        <p><strong>Contact:</strong> {event.num}</p>
-                        <a href={`/files/Event_Report_${event._id}.docx`} target="_blank" rel="noopener noreferrer">
-                            📄 View Report
-                        </a>
-                    </div>
-                ))}
-            </div>
+        <Header />
+        <div className="hi"> 
+        <div className="container-view">
+            <h2 className="title">Your Event Reports</h2>
+            {events.length === 0 ? (
+                <p className="no-events">No events found</p>
+            ) : (
+                <table className="event-table">
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Coordinator</th>
+                            <th>Contact Number</th>
+                            <th>More Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {events.map((event, index) => (
+                            <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+                                <td>{event.name}</td>
+                                <td>{event.eventDate}</td>
+                                <td>{event.endDate}</td>
+                                <td>{event.nc}</td>
+                                <td>{event.num}</td>
+                                <td>
+                                    <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
+                                        View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+        </div>
         </div>
         </>
     );

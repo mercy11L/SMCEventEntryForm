@@ -1,0 +1,77 @@
+.container-view {
+  width: 90%;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  
+}
+.hi{
+  background: url('/public/code_image/s1.jpg') no-repeat center center/cover;
+  padding: 40px 0;
+  position: relative; /* Needed for absolute positioning of the overlay */
+z-index: 1;
+}
+.hi::before {
+  content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.3); /* Adjust opacity to control darkness */
+z-index: -1;
+}
+
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: white;
+  font-weight: bolder;
+}
+
+
+.event-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.event-table th, .event-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.event-table th {
+  background-color: #4360B5;
+  color: white;
+}
+
+.event-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.event-table tbody tr:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+.view-btn {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 16px; /* Increased padding */
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+  font-size: 16px; /* Increased font size */
+  white-space: nowrap; /* Prevents text wrapping */
+  display: inline-block; /* Ensures button doesn't shrink */
+  width: auto; /* Adapts to content size */
+  text-align: center; /* Centers text */
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+}
+

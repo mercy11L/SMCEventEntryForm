@@ -11,36 +11,44 @@ const Download = () => {
   const eventId = location.state?.eventId;
   const navigate = useNavigate();
   const [loadingDocx, setLoadingDocx] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
 
-  const handleNav=()=>{
-    navigate("/ViewReport")
-  }
-  const handleDownload = async () => {
-    setLoadingDocx(true);
+  // const handleNav=()=>{
+  //   navigate("/ViewReport");
+  // }
+
+
+  const handleDownload = async (type) => {
+    if (type === "docx") setLoadingDocx(true);
+    else setLoadingPdf(true);
 
   try {
     const response = await axios.get(
-      `http://localhost:5000/download/${eventId}`,
+      `http://localhost:5000/download/${eventId}?type=${type}`,
       { responseType: "blob" }
     );
 
     const blob = new Blob([response.data], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      type: type === "pdf"
+        ? "application/pdf"
+        : "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     });
 
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `Event_Report.docx`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-    console.log("File downloaded successfully");
-  } catch (error) {
-    console.error("Error downloading file: ", error);
-  }
-    setLoadingDocx(false);
+    link.download = `Event_Report.${type}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      console.log(`File (${type}) downloaded successfully`);
+    } catch (error) {
+      console.error(`Error downloading ${type} file: `, error);
+    }
+
+    if (type === "docx") setLoadingDocx(false);
+    else setLoadingPdf(false);
 };
 
 
@@ -76,12 +84,19 @@ const Download = () => {
   Download Word Report
 </button>
 
-<button
+{/* <button
   className="btn btn-primary download-btn"
   onClick={handleNav}>
   {loadingDocx ? <span className="spinner-border spinner-border-sm me-2"></span> : null}
   View your past Generated Report
-</button>
+</button> */}
+        <button
+              className="btn btn-primary download-btn"
+              disabled={loadingPdf}
+              onClick={() => handleDownload("pdf")}>
+              {loadingPdf ? <span className="spinner-border spinner-border-sm me-2"></span> : null}
+              Download PDF Report
+            </button>
     </div>
   </div>
   </div>

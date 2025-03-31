@@ -151,11 +151,6 @@ const handleChange = (e) => {
             data.append(key, formData[key]);
         }
       }
-      
-      console.log("FormData Entries:");
-        for (let [key, value] of data.entries()) {
-            console.log(key, value);
-        }
 
       const response = await axios.post("http://localhost:5000/submit", data, {
         headers: { "Content-Type": "multipart/form-data" },
