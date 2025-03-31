@@ -24,8 +24,8 @@ const detSchema = new mongoose.Schema({
     inviteFilePaths: { type: [String], required: true },
     ptlistFilePaths: { type: [String], required: true },
     signatureFilePath: { type: String, required: true },
-    certFilePath: { type: String },
-    feedbackPath: { type: [String], required: true },
+    // certFilePath: { type: String },
+    // feedbackPath: { type: [String], required: true },
   });
 
 const detModel = new mongoose.model('Event_details', detSchema);
