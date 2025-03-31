@@ -1,6 +1,6 @@
 import "./css/Header.css";
 import { Link, useNavigate } from "react-router-dom";
-import { isAuthenticated,isAdminAuthenticated,logout, Alogout } from './services/Auth';
+import { isAuthenticated,isAdminAuthenticated } from './services/Auth';
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -23,13 +23,12 @@ export default function Header(props) {
                     <Link to="/AdminLogin" className="nav-link">Admin Login</Link>
                 </>
             ) : null}
-            {isAuthenticated() ? (
-                <li onClick={logout} className="nav-link" style={{ cursor: "pointer" }}>Logout</li>
-            ) : null}
-             {isAdminAuthenticated() ? (
-                <>
-                    <li onClick={Alogout} className="nav-link" style={{ cursor: "pointer" }}>Logout</li>
-                </>
+            { isAuthenticated() ?
+              <Link to="/ViewReport" className="nav-link">View Past Reports</Link>
+              :null
+            }
+            {isAuthenticated() || isAdminAuthenticated() ? (
+                <li onClick={props.logoutUser} className="nav-link" style={{ cursor: "pointer" }}>Logout</li>
             ) : null}
             {!isAuthenticated() && !isAdminAuthenticated() ? (
                 <Link to="/SignUp" className="nav-link">SignUp</Link>

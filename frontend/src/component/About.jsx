@@ -1,11 +1,25 @@
 import React from "react";
 import "./css/About.css";
 import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+import { logout,Alogout , isAdminAuthenticated } from './services/Auth';
 
 const About = () => {
+
+  const navigate = useNavigate();
+  const logoutUser= ()=>{
+            if(isAdminAuthenticated()){
+                Alogout();
+                navigate("/AdminLogin")
+            }
+            else{
+                logout();
+                navigate("/Login")
+            }
+  }
   return (
-    <div>
-      <Header />
+  <div>
+      <Header logoutUser={logoutUser}/>
       <div className="about-container">
         
         {/* First Section - Image Left, Text Right */}

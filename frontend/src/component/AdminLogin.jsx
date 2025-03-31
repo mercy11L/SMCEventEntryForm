@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import "./css/Login.css";
 import axios from "axios";
-import { Navigate, Link } from "react-router-dom";
+import {Navigate, useNavigate, Link } from "react-router-dom";
 import { storeAdminData } from "./services/storage";
-import { isAdminAuthenticated } from "./services/Auth";
+import { isAuthenticated, Alogout, isAdminAuthenticated } from "./services/Auth";
 import Header from "./Header.jsx";
 
 export default function AdminLogin() {
     const [inputs, setInputs] = useState({ email: "", password: "" });
     const [errors, setErrors] = useState({ email: false, password: false, custom_error: null });
     const [loading, setLoading] = useState(false);
+    const navigate= useNavigate();
 
     const handleInput = (event) => {
         const { name, value } = event.target;
@@ -39,13 +40,17 @@ export default function AdminLogin() {
         setErrors(newErrors);
     };
 
-    if (isAdminAuthenticated()) {
+    if (isAuthenticated() || isAdminAuthenticated()) {
         return <Navigate to="/" />;
     }
 
+    const logoutUser= ()=>{
+        Alogout();
+        navigate("/AdminLogin");
+    }
     return (
-        <>
-            <Header />
+          <>
+            <Header logoutUser={logoutUser}/>
             <section className="register-block">
                 <div className="container">
                     <div className="row">
@@ -53,12 +58,12 @@ export default function AdminLogin() {
                             <h2 className="text-center">Admin Login</h2>
                             <form onSubmit={handleSubmit} className="register-form">
                                 <div className="form-group">
-                                    <label className="text-uppercase">Admin Email</label>
+                                    <label  className="text-uppercase" >Email</label>
                                     <input type="text" className="form-control" onChange={handleInput} name="email" />
                                     {errors.email && <span className="text-danger">Email is required.</span>}
                                 </div>
                                 <div className="form-group">
-                                    <label className="text-uppercase">Admin Password</label>
+                                    <label  className="text-uppercase">Password</label>
                                     <input type="password" className="form-control" onChange={handleInput} name="password" />
                                     {errors.password && <span className="text-danger">Password is required.</span>}
                                 </div>
@@ -69,7 +74,7 @@ export default function AdminLogin() {
                                 </div>
                             </form>
                             <div className="form-group">
-                                <p>Not an admin? <Link to="/login">User Login</Link></p>
+                                <p>Not an admin? <Link to="/login">Login here</Link></p>
                             </div>
                         </div>
                     </div>

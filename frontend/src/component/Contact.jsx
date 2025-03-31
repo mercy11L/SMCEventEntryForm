@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import './css/Contact.css';
 import axios from "axios";
+import { logout,Alogout , isAdminAuthenticated } from './services/Auth';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -55,9 +56,19 @@ const Contact = () => {
     }
   };
 
-  return (
-    <>
-      <Header />
+  const logoutUser= ()=>{
+          if(isAdminAuthenticated()){
+              Alogout();
+              navigate("/AdminLogin")
+          }
+          else{
+              logout();
+              navigate("/Login")
+          }
+  }
+    return (
+      <>
+        <Header logoutUser={logoutUser}/>
       <div className="contact-container">
         <div className="contact-box">
           {/* Contact Info Section */}

@@ -133,7 +133,7 @@ router.get("/download/:id", async (req, res) => {
             { label: "Date", value: formatDate(event.eventDate) },
             { label: "Number of Participants", value: String(event.nofpart) },
             { label: "Theme", value: event.theme },
-        ];        
+        ];
 
         const tableRows1 = eventDetails.map(detail => 
             new TableRow({
@@ -432,12 +432,16 @@ router.get("/download/:id", async (req, res) => {
                             alignment: AlignmentType.RIGHT,
                             children: [
                                 new ImageRun({
-                                    type:"png",
+                                    type: "png",
                                     data: sign,
-                                    transformation: { width: 150, height: 70 },
+                                    transformation: { width: 150, height: 75 },
+                                }),
+                                new TextRun({
+                                    text: event.signcap,
+                                    break: 1,
                                 }),
                             ],
-                        }),
+                        }),                        
                     ], 
                 },
             ],

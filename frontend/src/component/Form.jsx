@@ -64,7 +64,7 @@ export default function Form() {
     if (!formData.nofpart.match(/^\d+$/)) {
       newErrors.nofpart = "Please provide valid count";
     }
-    if (!formData.name) newErrors.name = "Please enter the name";
+    if (!formData.name) newErrors.name = "Please enter the name of the event";
     if (!formData.lvl) newErrors.lvl = "Please select an event level";
     if (!formData.mode) newErrors.mode = "Please select a mode";
     if (!formData.eventDate) newErrors.eventDate = "Please select the start date of the event";
@@ -78,10 +78,10 @@ export default function Form() {
     if (!formData.organisedBy) {
       newErrors.organisedBy = "Please select an organizing group";
     }
-    if (formData.organisedBy === "departments" && formData.selectedOptions.length === 0) {
+    if (formData.organisedBy === "Departments" && formData.selectedOptions.length === 0) {
       newErrors.departments = "Please select at least one department";
   }
-  if (formData.organisedBy === "centres" && formData.selectedOptions.length === 0) {
+  if (formData.organisedBy === "Centres" && formData.selectedOptions.length === 0) {
       newErrors.centres = "Please select at least one centre";
   }
   if (formData.organisedBy === "Clubs" && formData.selectedOptions.length === 0) {
@@ -209,7 +209,6 @@ const handleThemeChange = (selectedOption) => {
   }));  
 };
 
-
   if(!isAuthenticated()){
     return <Navigate to="/Login"/>;
   }
@@ -221,6 +220,7 @@ const handleThemeChange = (selectedOption) => {
   return (
     <>
       <Header logoutUser={logoutUser}/>
+      <div className="form">
       <div className="form-container">
       <form onSubmit={handleSubmit}>
       <div className="form-row">
@@ -508,6 +508,7 @@ const handleThemeChange = (selectedOption) => {
       )}
       <button type="submit" className="form-submit" disabled={loading}>Submit</button>
       </form>
+      </div>
       </div>
     </>
     

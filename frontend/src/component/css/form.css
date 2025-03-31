@@ -1,11 +1,30 @@
-body {
+body{
+  background: url('/public/code_image/s1.jpg') no-repeat center center/cover;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    z-index: 1;
+}
+.form {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: url('/public/code_image/s1.jpg') no-repeat center center/cover; /* Add your dark image here */
-    background-size: cover; /* Ensure the image covers the entire background */
+    background: url('/public/code_image/s1.jpg') no-repeat center center/cover;
+    background-size: cover;
     background-attachment: fixed;
+    position: relative;
+    z-index: 1;
   }
+  .form::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0.3, 0.3);
+    z-index: -1;
+}
   
   .form-container {
     max-width: 60%;
@@ -26,12 +45,8 @@ body {
   
 
   .error-message {
-    color: darkred;
-    /* text-shadow: 1px 0px 0px rgb(66, 64, 64);
-    font-weight: bold; */
-    text-shadow: 0.5px 0px 0px red;
-    font-size: 0.9rem;
-    margin-top: 0.25rem;
+    color: #ff4444; /* Brighter red */
+    font-size: 14px; /* Slightly increase font size */
   }
 
   .form-group {

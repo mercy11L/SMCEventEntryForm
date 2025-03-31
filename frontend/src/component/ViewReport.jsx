@@ -2,21 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { isAuthenticated,logout } from "./services/Auth";
+import { isAuthenticated, logout } from "./services/Auth";
 import { getUserData } from "./services/storage";
 import Header from "./Header";
+import { FaSearch } from "react-icons/fa"; // Import search icon
 import "./css/ViewReport.css";
 
 export default function ViewReport() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredEvents, setFilteredEvents] = useState([]); // For search results
 
   useEffect(() => {
-    if (!isAuthenticated()) {
-      navigate("/Login");
-      return;
-    }
 
     const token = getUserData();
     const decoded = jwtDecode(token);
@@ -25,60 +23,83 @@ export default function ViewReport() {
     axios.get(`http://localhost:5000/events/${userId}`)
       .then((response) => {
         setEvents(response.data);
-        setLoading(false);
+        setFilteredEvents(response.data);
       })
       .catch((error) => {
         console.error("Error fetching events:", error);
-        setLoading(false);
       });
   }, [navigate]);
 
+  if (!isAuthenticated()) {
+    navigate("/Login");
+    return;
+  }
+
   const logoutUser = () => {
-      logout();
-      navigate("/Login");
-    };
-  
-    return (
-      <>
-        <Header logoutUser={logoutUser} />
-      <div className="hi"> 
-      <div className="container-view">
-        <h2 className="title">Your Event Reports</h2>
-        {loading ? (
-          <p className="loading">Loading...</p>
-        ) : events.length === 0 ? (
-          <p className="no-events">No events found</p>
-        ) : (
-          <table className="event-table">
-            <thead>
-              <tr>
-                <th>Event Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Organised By</th>
-                <th>Theme</th>
-                <th>More Info</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event, index) => (
-                <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
-                  <td>{event.name}</td>
-                  <td>{event.eventDate}</td>
-                  <td>{event.endDate}</td>
-                  <td>{event.organisedBy}</td>
-                  <td>{event.theme}</td>
-                  <td>
-                  <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
-                  View Details
-                  </a>
-                  </td>
+    logout();
+    navigate("/Login");
+  };
+
+  // Handle search
+  const handleSearch = () => {
+    const filtered = events.filter(event =>
+      event.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredEvents(filtered);
+  };
+
+  return (
+    <>
+      <Header logoutUser={logoutUser} />
+      <div className="hii">
+        <div className="container-view">
+          <h2 className="title">Your Event Reports</h2>
+
+          {/* Search Box */}
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Enter event name"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <FaSearch className="search-icon" onClick={handleSearch} />
+          </div>
+
+          {filteredEvents.length === 0 ? (
+            <p className="no-events">No events found</p>
+          ) : (
+            <table className="event-table">
+              <thead>
+                <tr>
+                  <th>Event Name</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Organised By</th>
+                  <th>Theme</th>
+                  <th>More Info</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                {filteredEvents.map((event, index) => (
+                  <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+                    <td>{event.name}</td>
+                    <td>{event.eventDate}</td>
+                    <td>{event.endDate}</td>
+                    <td>{event.organisedBy}</td>
+                    <td>{event.theme}</td>
+                    <td>
+                      <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
+                        View Details
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </>
   );

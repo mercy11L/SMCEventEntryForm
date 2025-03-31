@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate,Link } from 'react-router-dom';
 import "./css/Home.css";
-import { isAdminAuthenticated,logout } from './services/Auth';
+import { isAdminAuthenticated,logout,Alogout } from './services/Auth';
 import Header from "./Header.jsx";
 
 export default function Home() {
@@ -24,13 +24,19 @@ export default function Home() {
     }, [images.length]); // Only depends on images.length
 
     const logoutUser= ()=>{
-        logout();
-        navigate("/Login")
+        if(isAdminAuthenticated()){
+            Alogout();
+            navigate("/AdminLogin")
+        }
+        else{
+            logout();
+            navigate("/Login")
+        }
     }
     return (
         <>
             <Header logoutUser={logoutUser}/>
-            <section id="home-section">
+            <section className="home-section">
             <div className="carousel">
                 {images.map((img, index) => (
                     <div 

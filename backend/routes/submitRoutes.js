@@ -50,7 +50,6 @@ router.post('/submit', uploadHandler, async (req, res) => {
         const signatureFilePath = files.signature ? files.signature[0].filename : null;
         const GeoFilePaths = files.geo ? files.geo.map(file => file.filename) : [];
         
-        console.log(categories);
         const newDet = new detModel({
             user: user_id, num, name, lvl, mode, eventDate, organisedBy,selectedOptions, sc, nc,
             endDate,isOrganised,categories, nofpart, theme, desc, obj, outcome, geocap,signcap,

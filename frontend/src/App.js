@@ -19,12 +19,12 @@ function App() {
       <div className="App">
       <Routes>
       <Route path="/Header" element={<Header/>} />
+      <Route path="/" element={<Home />} />
       <Route path="/dispEvents" element={<DispayEvents/>} />
       <Route path="/AdminLogin" element={<AdminLogin/>} />
       <Route path="/Form" element={<Form />} />
       <Route path="/About" element={<About/>} />
       <Route path="/Contact" element={<Contact/>} />
-      <Route path="/" element={<Home />} />
       <Route path="/SignUp" element={<SignUp />} />
       <Route path="/Download" element={<Download />} />
       <Route path="/Login" element={<Login />} />
