@@ -1,5 +1,6 @@
 const express = require("express");
 const multer=require("multer");
+//const sharp = require("sharp"); -> helps to convert one file type to another
 const detModel = require("../models/DetsModel");
 const userModel = require("../models/UserModel");
 const router = express.Router();
@@ -26,7 +27,9 @@ const upload = multer({
     { name: 'geo', maxCount: 10 },
     { name: 'invite', maxCount: 10 },
     { name: 'ptlist', maxCount: 10 },
-    { name: 'signature', maxCount: 1 }
+    { name: 'signature', maxCount: 1 },
+    { name: 'cert', maxCount: 1 },
+    { name: 'fback', maxCount: 10 }
 ]);
 
 router.post('/submit', uploadHandler, async (req, res) => {
@@ -34,7 +37,7 @@ router.post('/submit', uploadHandler, async (req, res) => {
         const selectedOptions = req.body.selectedOptions ? JSON.parse(req.body.selectedOptions) : [];
         const categories = req.body.categories ? JSON.parse(req.body.categories) : [];
     
-        const { user_id, num, name, lvl, mode, eventDate, organisedBy, nc, endDate, sc, isOrganised, nofpart, theme, desc, obj, outcome, geocap, signcap } = req.body;
+        const { user_id, num, name, lvl, mode, eventDate, organisedBy, nc, endDate, venue, isOrganised, nofpart, theme, desc, obj, outcome, geocap, signcap } = req.body;
         const files = req.files;
 
         if (!files) {
@@ -48,12 +51,14 @@ router.post('/submit', uploadHandler, async (req, res) => {
         const inviteFilePaths = files.invite ? files.invite.map(file => file.filename) : [];
         const ptlistFilePaths = files.ptlist ? files.ptlist.map(file => file.filename) : [];
         const signatureFilePath = files.signature ? files.signature[0].filename : null;
+        const certFilePath = files.cert ? files.cert[0].filename : null;
         const GeoFilePaths = files.geo ? files.geo.map(file => file.filename) : [];
+        const fbackFilePaths = files.fback ? files.fback.map(file => file.filename) : [];
         
         const newDet = new detModel({
-            user: user_id, num, name, lvl, mode, eventDate, organisedBy,selectedOptions, sc, nc,
+            user: user_id, num, name, lvl, mode, eventDate, organisedBy,selectedOptions, venue, nc,
             endDate,isOrganised,categories, nofpart, theme, desc, obj, outcome, geocap,signcap,
-            GeoFilePaths, inviteFilePaths, ptlistFilePaths, signatureFilePath
+            GeoFilePaths, inviteFilePaths, ptlistFilePaths, signatureFilePath,certFilePath,fbackFilePaths
         });
         
         await newDet.save();

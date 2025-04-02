@@ -10,7 +10,7 @@ const detSchema = new mongoose.Schema({
     endDate: { type: String, required: true },
     organisedBy: { type: String, required: true },
     selectedOptions: { type: [String], required: true },
-    sc: { type: String, required: true },
+    venue: { type: String, required: true },
     isOrganised: { type: String, required: true },
     categories: { type: [String], required: true },
     nofpart: { type: Number, required: true },
@@ -24,8 +24,8 @@ const detSchema = new mongoose.Schema({
     inviteFilePaths: { type: [String], required: true },
     ptlistFilePaths: { type: [String], required: true },
     signatureFilePath: { type: String, required: true },
-    // certFilePath: { type: String },
-    // feedbackPath: { type: [String], required: true },
+    certFilePath: { type: String },
+    fbackFilePaths: { type: [String], required: true },
   });
 
 const detModel = new mongoose.model('Event_details', detSchema);

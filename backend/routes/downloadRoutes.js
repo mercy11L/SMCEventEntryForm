@@ -20,7 +20,12 @@ router.get("/download/:id", async (req, res) => {
         if (!event) {
             return res.status(404).json({ message: "Event not found" });
         }
-        
+        function getFileType(fileName) {
+            console.log(fileName)
+            console.log(path.extname(fileName).toLowerCase().replace(".", ""))
+            return path.extname(fileName).toLowerCase().replace(".", "");
+        }
+
         function convertHtmlToDocx(html) {
             const { document } = new JSDOM(`<!DOCTYPE html><body>${html}</body>`).window;
             const body = document.body;
@@ -122,6 +127,11 @@ router.get("/download/:id", async (req, res) => {
         const footerImage = fs.readFileSync(path.join(__dirname, "../public/code_image/footer.png"));
         const wmark= fs.readFileSync(path.join(__dirname, "../public/code_image/stella_watermark.png"));
         const sign= fs.readFileSync(path.join(__dirname, "../public/images/", event.signatureFilePath));
+
+        const cert = event.certFilePath && event.certFilePath.trim() !== "" 
+        ? fs.readFileSync(path.join(__dirname, "../public/images/", event.certFilePath))
+        : null;
+
         const objParagraphs = convertHtmlToDocx(event.obj);
         const descParagraphs = convertHtmlToDocx(event.desc);
         const outcomeParagraphs = convertHtmlToDocx(event.outcome);
@@ -142,13 +152,13 @@ router.get("/download/:id", async (req, res) => {
                         children: [new Paragraph({ children: [new TextRun({ text: `${detail.label}` })] })],
                         margins: { top: 110, bottom: 110 },
                         width: { size: 35, type: WidthType.PERCENTAGE },
-                        verticalAlign: "center",
+                        verticalAlign: "top",
                     }),
                     new TableCell({
                         children: [new Paragraph({ children: [new TextRun({ text: ":" })] })],
                         margins: { top: 110, bottom: 110 },
                         width: { size: 3, type: WidthType.PERCENTAGE },
-                        verticalAlign: "center",
+                        verticalAlign: "top",
                     }),
                     new TableCell({
                         children: detail.value.split("\n").map(text => 
@@ -158,7 +168,7 @@ router.get("/download/:id", async (req, res) => {
                         ),
                         margins: { top: 110, bottom: 110 },
                         width: { size: 62, type: WidthType.PERCENTAGE },
-                        verticalAlign: "center",
+                        verticalAlign: "top",
                     }),
                 ]
             })
@@ -183,10 +193,13 @@ router.get("/download/:id", async (req, res) => {
             for (let i = 0; i < event.inviteFilePaths.length; i += 2) {
                 const image1Path = path.join(__dirname, "../public/images/", event.inviteFilePaths[i]);
                 const image1 = fs.existsSync(image1Path) ? fs.readFileSync(image1Path) : null;
+                const image1Type = image1 ? getFileType(event.inviteFilePaths[i]) : null;
+
                 const image2Path = event.inviteFilePaths[i + 1] 
-                    ? path.join(__dirname, "../public/images/", event.inviteFilePaths[i + 1])
-                    : null;
+                ? path.join(__dirname, "../public/images/", event.inviteFilePaths[i + 1])
+                : null;
                 const image2 = image2Path && fs.existsSync(image2Path) ? fs.readFileSync(image2Path) : null; 
+                const image2Type = image2 ? getFileType(event.inviteFilePaths[i + 1]) : null;
 
                 const cells = [
                     new TableCell({
@@ -194,7 +207,7 @@ router.get("/download/:id", async (req, res) => {
                             ? [new Paragraph({
                                 children: [
                                     new ImageRun({
-                                        type: "png",
+                                        type: image1Type,
                                         data: image1,
                                         transformation: { width: 300, height: 470 },
                                     }),
@@ -210,14 +223,14 @@ router.get("/download/:id", async (req, res) => {
                             ? [new Paragraph({
                                 children: [
                                     new ImageRun({
-                                        type: "png",
+                                        type: image2Type,
                                         data: image2,
                                         transformation: { width: 300, height: 470 },
                                     }),
                                 ],
                                 alignment: AlignmentType.CENTER,
                             })]
-                            : [new Paragraph({ text: "" })], // Leave empty if no second image
+                            : [new Paragraph({ text: "" })], // leave empty if no second image
                             width: { size: 50, type: WidthType.PERCENTAGE },
                             margins: { top: 150, bottom: 150, left: 150, right: 150 },
                     }),
@@ -244,11 +257,11 @@ router.get("/download/:id", async (req, res) => {
         const geoImagesWithCaptions = event.GeoFilePaths.map((filePath, index) => {
             const captionsArray = geocap ? geocap.split(',') : [];
             const caption = captionsArray[index]?.trim() || "";
-        
+
             return new Paragraph({
                 children: [
                     new ImageRun({
-                        type: "png",
+                        type: getFileType(filePath),
                         data: fs.readFileSync(`./public/images/${filePath}`),
                         transformation: { width: 600, height: 300 },
                     }),
@@ -265,7 +278,7 @@ router.get("/download/:id", async (req, res) => {
             return new Paragraph({
                 children: [
                     new ImageRun({
-                        type: "png",
+                        type: getFileType(filePath),
                         data: fs.readFileSync(`./public/images/${filePath}`),
                         transformation: { 
                             width: 600,
@@ -275,8 +288,28 @@ router.get("/download/:id", async (req, res) => {
                 ],
                 alignment: AlignmentType.CENTER,
             });
-        });        
+        });
 
+        console.log("certificaatepath: ",event.certFilePath);
+
+        const certificateSection = event.certFilePath ? [
+            new Paragraph({ 
+                children: [new TextRun({ text: "SAMPLE CERTIFICATE", bold: true })],
+                alignment: AlignmentType.CENTER,
+                spacing: { before: 200, after: 200 },
+            }),
+            new Paragraph({
+                children: [
+                    new ImageRun({
+                        type: getFileType(event.certFilePath),
+                        data: cert,
+                        transformation: { width: 600, height: 400 },
+                    }),
+                ],
+                alignment: AlignmentType.CENTER,
+            }),
+        ] : [];
+        
         const doc = new Document({
             numbering,
             styles,
@@ -350,7 +383,7 @@ router.get("/download/:id", async (req, res) => {
                                     alignment: AlignmentType.CENTER,
                                     spacing: {             //whole page line spacing = 360(1.5) so footer space adjust
                                         line: 260,
-                                        before: 0,
+                                        before: 400,
                                         after: 0,
                                     },
                                 }),
@@ -370,7 +403,7 @@ router.get("/download/:id", async (req, res) => {
                         eventTable,
                         // new Paragraph({
                         //     children: [],
-                        //     pageBreakBefore: true, // Moves next content to a new page
+                        //     pageBreakBefore: true, // moves next content to new pg
                         // }), // Page break
                         new Paragraph({ text: "" }),
                         inviteImageTable,
@@ -428,21 +461,65 @@ router.get("/download/:id", async (req, res) => {
                             spacing: { before: 200, after: 200 },
                         }),
                         ...ptlistDisplay,
+                    ],
+                },
+                ...(certificateSection.length > 0
+                    ? [
+                        {
+                            properties: {
+                                pageBreakBefore: true,
+                                page: {
+                                  margin: { top: 0, left: 1440, right: 1440, bottom: 0, header: 0, footer: 0 },
+                                },
+                            },
+                            children: [...certificateSection],
+                        },
+                    ]
+                : []),
+            
+                {
+                    properties: {
+                        pageBreakBefore: true,
+                        page: {
+                            margin: { top: 0, left: 1440, right: 1440, bottom: 0, header: 0, footer: 0 },
+                        },
+                    },
+                    children: [
+                        new Paragraph({
+                            children: [new TextRun({ text: "FEEDBACK OF THE EVENT", bold: true })],
+                            alignment: AlignmentType.CENTER,
+                            spacing: { before: 200, after: 200 },
+                        }),
+            
+                        ...event.fbackFilePaths.map((filePath) =>
+                            new Paragraph({
+                                children: [
+                                    new ImageRun({
+                                        type: getFileType(filePath),
+                                        data: fs.readFileSync(path.join(__dirname, "../public/images/", filePath)),
+                                        transformation: { width: 600, height: 500 },
+                                    }),
+                                ],
+                                alignment: AlignmentType.CENTER,
+                            })
+                        ),
+            
                         new Paragraph({
                             alignment: AlignmentType.RIGHT,
                             children: [
                                 new ImageRun({
-                                    type: "png",
+                                    type: getFileType(event.signatureFilePath),
                                     data: sign,
                                     transformation: { width: 150, height: 75 },
                                 }),
                                 new TextRun({
                                     text: event.signcap,
+                                    bold:true,
                                     break: 1,
                                 }),
                             ],
-                        }),                        
-                    ], 
+                        }),
+                    ],
                 },
             ],
         });

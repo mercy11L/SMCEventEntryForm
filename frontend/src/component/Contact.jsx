@@ -4,6 +4,8 @@ import Header from './Header';
 import './css/Contact.css';
 import axios from "axios";
 import { logout,Alogout , isAdminAuthenticated } from './services/Auth';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faBuilding, faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -71,14 +73,12 @@ const Contact = () => {
         <Header logoutUser={logoutUser}/>
       <div className="contact-container">
         <div className="contact-box">
-          {/* Contact Info Section */}
           <div className="contact-info">
             <h2>Contact Info</h2>
-            <p>17, Cathedral Road, Chennai, TamilNadu, India</p>
-            <p>vpofficesmc@gmail.com</p>
-            <p>04428110121</p>
+            <p><FontAwesomeIcon icon={faMapMarkerAlt} /> 17, Cathedral Road, Chennai, Tamil Nadu, India</p>
+            <p><FontAwesomeIcon icon={faEnvelope} /> vpofficesmc@gmail.com</p>
+            <p><FontAwesomeIcon icon={faPhone} /> 044-28110121</p>
           </div>
-          {/* Contact Form Section */}
           <div className="contact-form">
             <h2>Send your Query</h2>
             <form onSubmit={handleSubmit}>

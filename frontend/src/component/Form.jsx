@@ -28,7 +28,7 @@ export default function Form() {
     endDate: "",
     organisedBy: "",
     selectedOptions: [],
-    sc:"",
+    venue:"",
     isOrganised: "",
     nofpart:"",
     theme:"",
@@ -42,6 +42,8 @@ export default function Form() {
     invite: [],
     ptlist: [],
     signature: "",
+    cert: "",
+    fback:[]
   });
 
   const quillModules = {
@@ -49,12 +51,18 @@ export default function Form() {
       [{ 'header': [1, 2, 3, false] }], 
       ['bold', 'italic', 'underline', 'strike'],
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      ['link'], 
       //['link', 'image'], 
       [{ 'align': [] }],
       ['clean']
     ]
   }
+
+  const allowedExtensions = ["jpg", "jpeg", "png"];
+  const isValidFileType = (file) => {
+    if (!file) return false; 
+    const extension = file.name.split('.').pop().toLowerCase();
+    return allowedExtensions.includes(extension);
+  };
 
   const validate = () => {
     let newErrors = {};
@@ -73,7 +81,7 @@ export default function Form() {
     if (!formData.theme) newErrors.theme = "Please enter the theme of the event";
     if (!formData.nc) newErrors.nc = "Please Enter the name of the event Coordinator";
     if (!formData.endDate) newErrors.endDate = "Please enter the end date of the event";
-    if (!formData.sc.trim()) newErrors.sc = "Enter special considerations";
+    if (!formData.venue.trim()) newErrors.venue = "Please enter the Venue of the event";
     
     if (!formData.organisedBy) {
       newErrors.organisedBy = "Please select an organizing group";
@@ -98,11 +106,40 @@ export default function Form() {
     if (!formData.categories || formData.categories.length === 0) newErrors.categories = "Please select atleast one category";
     if (!formData.theme) newErrors.theme = "Please select the Theme of the Event";
 
-    if (!formData.invite || formData.invite.length === 0) newErrors.invite = "Please upload at least one invite file";
-    if (!formData.ptlist || formData.ptlist.length === 0) newErrors.ptlist = "Please upload at least one participant list file";
-    if (!formData.geo || formData.geo.length === 0) newErrors.geo = "Please upload at least one Geotagged file";
+    if (!formData.invite || formData.invite.length === 0) {
+      newErrors.invite = "Please upload at least one invite file.";
+    } else if (!formData.invite.every(isValidFileType)) {
+      newErrors.invite = "Only JPG, JPEG, or PNG formats are allowed.";
+    }
+    
+    if (!formData.ptlist || formData.ptlist.length === 0) {
+      newErrors.ptlist = "Please upload at least one participant list file.";
+    } else if (!formData.ptlist.every(isValidFileType)) {
+      newErrors.ptlist = "Only JPG, JPEG, or PNG formats are allowed.";
+    }
+    
+    if (!formData.fback || formData.fback.length === 0) {
+      newErrors.fback = "Please upload the feedback snippets from Google Form.";
+    } else if (!formData.fback.every(isValidFileType)) {
+      newErrors.fback = "Only JPG, JPEG, or PNG formats are allowed.";
+    }
+    
+    if (!formData.geo || formData.geo.length === 0) {
+      newErrors.geo = "Please upload at least one Geotagged Image.";
+    } else if (!formData.geo.every(isValidFileType)) {
+      newErrors.geo = "Only JPG, JPEG, or PNG formats are allowed.";
+    }
+    
+    if (!formData.signature || formData.signature.length === 0) {
+      newErrors.signature = "Please upload a signature file.";
+    } else if (!formData.signature.every(isValidFileType)) {
+      newErrors.signature = "Only JPG, JPEG, or PNG formats are allowed.";
+    }
+    if (formData.cert && formData.cert.length > 0 && !formData.cert.every(isValidFileType)) {
+      newErrors.cert = "Please upload file in JPG, JPEG, or PNG format.";
+    }
+
     if (!formData.geocap) newErrors.geocap = "Please provide captions for the geotagged pictures";
-    if (!formData.signature || formData.signature.length === 0) newErrors.signature = "Please upload signature file";
     if (!formData.signcap) newErrors.signcap = "Please menton the description of the signature";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -159,7 +196,7 @@ const handleChange = (e) => {
       setEventId(response.data.id);
       if (response.data.message.includes("success")) {
         setSubSuccess(true);
-        navigate("/Download", { state: { eventId: response.data.id } });
+        navigate("/Download", { state: { eventId: response.data.id , name: formData.name} });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -195,7 +232,6 @@ const handleSelectChange = (name) => (selectedOptions) => {
   }));
 };
 
-
 const handleThemeChange = (selectedOption) => {   
   console.log(selectedOption);  
   setFormData((prevData) => ({     
@@ -225,19 +261,19 @@ const handleThemeChange = (selectedOption) => {
       <form onSubmit={handleSubmit}>
       <div className="form-row">
       <div className="form-group">
-          <label htmlFor="name">Name of the Event</label>
+          <label htmlFor="name">Name of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} className="form-input" />
           {errors.name && <p className="error-message">{errors.name}</p>}
         </div>
         </div>
         <div className="form-row">
         <div className="form-group">
-          <label htmlFor="eventDate">Start Date of the Event</label>
+          <label htmlFor="eventDate">Start Date of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="date" id="eventDate" name="eventDate" value={formData.eventDate} onChange={handleChange} className="form-input" />
           {errors.eventDate && <p className="error-message">{errors.eventDate}</p>}
         </div>
         <div className="form-group">
-          <label htmlFor="endDate">End Date of the Event</label>
+          <label htmlFor="endDate">End Date of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="date" id="endDate" name="endDate" min={formData.eventDate || ""} value={formData.endDate} onChange={handleChange} className="form-input" />
           {errors.endDate && <p className="error-message">{errors.endDate}</p>}
         </div>
@@ -245,7 +281,7 @@ const handleThemeChange = (selectedOption) => {
         <div className="form-row">
           
         <div className="form-group">
-          <label htmlFor="lvl">Event Level</label>
+          <label htmlFor="lvl">Event Level <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <select id="lvl" name="lvl" value={formData.lvl} onChange={handleChange} className="form-select">
             <option value="" disabled>Select an option</option>
             <option>International</option>
@@ -259,7 +295,7 @@ const handleThemeChange = (selectedOption) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="mode">Mode of Event</label>
+          <label htmlFor="mode">Mode of Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <select id="mode" name="mode" value={formData.mode} onChange={handleChange} className="form-select">
             <option value="" disabled>Select an option</option>
             <option>Online</option>
@@ -271,12 +307,12 @@ const handleThemeChange = (selectedOption) => {
         </div>  
         <div className="form-row">
       <div className="form-group">
-          <label htmlFor="nc">Name of the Event Coordinator</label>
+          <label htmlFor="nc">Name of the Event Coordinator <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="text" id="nc" name="nc" value={formData.nc} onChange={handleChange} className="form-input" />
           {errors.nc && <p className="error-message">{errors.nc}</p>}
         </div>
         <div className="form-group">
-          <label htmlFor="num">Contact Number of the Event Coordinator</label>
+          <label htmlFor="num">Contact Number of the Event Coordinator <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="text" id="num" name="num" value={formData.num} onChange={handleChange} className="form-input" />
           {errors.num && <p className="error-message">{errors.num}</p>}
         </div>
@@ -284,25 +320,25 @@ const handleThemeChange = (selectedOption) => {
         
         <div className="form-row">
         <div className="form-group">
-          <label htmlFor="nofpart">Number of Participants</label>
+          <label htmlFor="nofpart">Number of Participants <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="text" id="nofpart" name="nofpart" value={formData.nofpart} onChange={handleChange} className="form-input" />
           {errors.nofpart && <p className="error-message">{errors.nofpart}</p>}
         </div>
         <div className="form-group">
-          <label htmlFor="sc">Special Considerations</label>
+          <label htmlFor="venue">Venue of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input 
   type="text" 
-  id="sc" 
-  name="sc" 
-  value={formData.sc} 
+  id="venue" 
+  name="venue" 
+  value={formData.venue} 
   onChange={handleChange} 
   className="form-input"
 />
-          {errors.sc && <p className="error-message">{errors.sc}</p>}
+          {errors.venue && <p className="error-message">{errors.venue}</p>}
         </div>
         </div>
         <div className="form-group">
-        <label htmlFor="organisedBy">The Event Organised By</label>
+        <label htmlFor="organisedBy">The Event Organised By <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <select 
   name="organisedBy" 
   className="form-select" 
@@ -317,9 +353,8 @@ const handleThemeChange = (selectedOption) => {
 {errors.organisedBy && <p className="error-message">{errors.organisedBy}</p>}
         </div>
         {formData.organisedBy === "Departments" && (
-          
         <div className="form-group">
-        <label>Select the organising Department(s)</label>
+        <label>Select the organising Department(s) <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <Select
         options={departments}
         isMulti
@@ -335,7 +370,7 @@ const handleThemeChange = (selectedOption) => {
         </div>)}
         {formData.organisedBy === "Centres" && (
         <div className="form-group">
-        <label>Select the organising Centre(s)</label>
+        <label>Select the organising Centre(s) <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <Select
         options={centres}
         isMulti
@@ -351,7 +386,7 @@ const handleThemeChange = (selectedOption) => {
         </div>)}
         {formData.organisedBy === "Clubs" && (
         <div className="form-group">
-        <label>Select the organising Club(s)</label>
+        <label>Select the organising Club(s) <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <Select
         options={clubs}
         isMulti
@@ -367,7 +402,7 @@ const handleThemeChange = (selectedOption) => {
         </div>)}
         {formData.organisedBy === "Units" && (
         <div className="form-group">
-        <label>Select the organising Unit(s)</label>
+        <label>Select the organising Unit(s) <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <Select
         options={units}
         id="form-select"
@@ -383,7 +418,7 @@ const handleThemeChange = (selectedOption) => {
         </div>)}
         
         <div className="form-group">
-        <label>Select the Categories</label>
+        <label>Select the Categories <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
         <Select
         id="form-select"
         closeMenuOnSelect={false}
@@ -399,7 +434,7 @@ const handleThemeChange = (selectedOption) => {
       </div>
       <div className="form-row">
       <div className="form-group">
-          <label>Is the event organised by the Institution?</label>
+          <label>Is the event organised by the Institution? <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <div className="form-radio-group">
           <label><input type="radio" name="isOrganised" value="yes" checked={formData.isOrganised === 'yes'} onChange={handleChange} />
           Yes</label>
@@ -410,7 +445,7 @@ const handleThemeChange = (selectedOption) => {
           {errors.isOrganised && <p className="error-message">{errors.isOrganised}</p>}
         </div>
       <div className="form-group">
-      <label>Select the Theme of the Event</label>
+      <label>Select the Theme of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
       <Select
         options={themes}
         value={themes.find(option => option.label === formData.theme) || null}
@@ -423,7 +458,7 @@ const handleThemeChange = (selectedOption) => {
     </div>
     </div>
         <div className="form-group">
-          <label htmlFor="obj">Objective of the Event</label>
+          <label htmlFor="obj">Objective of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           {/* <textarea type="text" id="obj" name="obj" value={formData.obj} onChange={(e) => setFormData({ ...formData, obj: e.target.value })} className="form-input"></textarea> */}
           <ReactQuill value={formData.obj} modules={quillModules} 
           onChange={(value) => {
@@ -437,7 +472,7 @@ const handleThemeChange = (selectedOption) => {
         </div>
             
         <div className="form-group">
-          <label htmlFor="desc">Description of the Event</label>
+          <label htmlFor="desc">Description of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <ReactQuill value={formData.desc} modules={quillModules} 
           onChange={(value) => {
             setFormData({ ...formData, desc: value });
@@ -450,7 +485,7 @@ const handleThemeChange = (selectedOption) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="outcome">Outcome of the Event</label>
+          <label htmlFor="outcome">Outcome of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <ReactQuill value={formData.outcome} modules={quillModules} 
           onChange={(value) => {
             setFormData({ ...formData, outcome: value });
@@ -461,44 +496,53 @@ const handleThemeChange = (selectedOption) => {
             )}} /> 
           {errors.outcome && <p className="error-message">{errors.outcome}</p>}
         </div>
-
+        
         <div className="form-group">
-          <label>Upload Invitation</label>
+          <label>Upload Invitation <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           {/* <input type="file" name="invite" multiple onChange={(e) => saveFile(e, 'invite')} className="form-file" /> */}
           <input type="file" name="invite" multiple onChange={handleChange} className="form-file" />
           {errors.invite && <p className="error-message">{errors.invite}</p>}
-          {/* {renderFileList} */}
         </div>
 
           <div className="form-group">
-            <label>Upload Geo-tagged pictures</label>
+            <label>Upload Geo-tagged pictures <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
             <input type="file" name="geo" multiple onChange={handleChange} className="form-file" />
             {errors.geo && <p className="error-message">{errors.geo}</p>}
           </div>
 
           <div className="form-group">
-            <label>Captions for Geo-tagged pictures<small><p>Please provide captions for the geo-tagged pictures in the same order as uploaded, separated by commas. If a picture has no caption, leave it blank</p></small></label>
+            <label>Captions for Geo-tagged pictures <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span><small><p>Please provide captions for the geo-tagged pictures in the same order as uploaded, separated by commas. If a picture has no caption, leave it blank</p></small></label>
             <input type="text" name="geocap" onChange={handleChange} className="form-file" />
             {errors.geocap && <p className="error-message">{errors.geocap}</p>}
           </div>
 
         <div className="form-group">
-          <label>Upload Participation List</label>
+          <label>Upload Participation List <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="file" name="ptlist"  multiple onChange={handleChange} className="form-file" />
           {errors.ptlist && <p className="error-message">{errors.ptlist}</p>}
         </div>
 
         <div className="form-group">
-          <label>Upload Signature</label>
+          <label>Upload Signature <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
           <input type="file" name="signature" onChange={handleChange} className="form-file" />
           {errors.signature && <p className="error-message">{errors.signature}</p>}
         </div>
 
         <div className="form-group">
-            <label>Description of the Signature uploaded<small>Eg: Name, department, ..</small></label>
+            <label>Description of the Signature uploaded <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span><small><p>Eg: Name, department, ..</p></small></label>
             <input type="text" name="signcap" onChange={handleChange} className="form-file" />
             {errors.signcap && <p className="error-message">{errors.signcap}</p>}
           </div>
+        <div className="form-group">
+          <label>Upload Sample Certificate</label>
+          <input type="file" name="cert" onChange={handleChange} className="form-file" />
+        </div>
+        <div className="form-group">
+          <label>Upload Snippets of Feedback analysis as pie chart from Google Forms <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
+          <input type="file" name="fback" multiple onChange={handleChange} className="form-file" />
+          {errors.fback && <p className="error-message">{errors.fback}</p>}
+        </div>
+        
       {loading && (
         <div className="text-center">
           <div className="spinner-border text-primary" role="status">

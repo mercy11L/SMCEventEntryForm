@@ -6,7 +6,7 @@ import Header from "./Header.jsx";
 
 export default function Home() {
     const images = [
-        "/code_image/s1.jpg",  // Replace with actual image paths
+        "/code_image/s1.jpg",
         "/code_image/s2.jpg",
         "/code_image/s3.jpg"
     ];
@@ -14,14 +14,13 @@ export default function Home() {
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Auto-slide every 3 seconds
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
         }, 3000);
 
-        return () => clearInterval(interval); // Cleanup on unmount
-    }, [images.length]); // Only depends on images.length
+        return () => clearInterval(interval);
+    }, [images.length]);
 
     const logoutUser= ()=>{
         if(isAdminAuthenticated()){

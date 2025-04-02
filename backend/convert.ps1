@@ -5,7 +5,13 @@ param (
 
 $word = New-Object -ComObject Word.Application
 $word.Visible = $false
+try {
 $doc = $word.Documents.Open($inputDoc)
 $doc.SaveAs($outputPdf, 17)
 $doc.Close()
-$word.Quit()
+}
+catch {
+    Write-Error "Failed to convert..: $_"
+} finally {
+    $word.Quit()
+}
