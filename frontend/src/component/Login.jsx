@@ -14,8 +14,8 @@ export default function Login() {
     });
 
     const initialStateErrors = {
-        email: { required: false },
-        password: { required: false },
+        email: { required: false, invalid:false },
+        password: { required: false ,length:false},
         custom_error: null
     };
 
@@ -39,7 +39,7 @@ export default function Login() {
     };
     
     //const navigate = useNavigate();
-
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const handleSubmit = async (event) => {
         event.preventDefault();
         let errors = initialStateErrors;
@@ -49,8 +49,13 @@ export default function Login() {
             errors.password.required = true;
             hasError = true;
         }
+        
         if (inputs.email === "") {
             errors.email.required = true;
+            hasError = true;
+        }
+        else if (!emailRegex.test(inputs.email)) {
+            errors.email.invalid = true;
             hasError = true;
         }
 
@@ -67,7 +72,7 @@ export default function Login() {
                     setErrors({...errors,custom_error:"Invalid User Credentials."});
                 }
                 else if (error.response.data.message === "Server error."){
-                setErrors({...errors,custom_error:error.response.data.message})
+                    setErrors({...errors,custom_error:error.response.data.message})
                 }
             })
             .finally(() => {
@@ -75,7 +80,6 @@ export default function Login() {
             });
         }
         else{
-            console.log(initialStateErrors,errors);
             setErrors({...errors}); 
         } 
     };
@@ -97,11 +101,15 @@ export default function Login() {
                                     <label htmlFor="exampleInputEmail1" className="text-uppercase">Email</label>
                                     <input type="text" className="form-control" onChange={handleInput} name="email" />
                                     {errors.email.required && (<span className="text-danger">Email is required.</span>)}
+                                    {errors.email.invalid ? (<span className="text-danger" >
+                                    Invalid email format
+                                </span>) : null}
                                 </div>
                                 <div className="form-group">
                                     <label htmlFor="exampleInputPassword1" className="text-uppercase">Password</label>
                                     <input className="form-control" type="password" onChange={handleInput} name="password" />
                                     {errors.password.required && (<span className="text-danger">Password is required.</span>)}
+                                    
                                 </div>
                                 <div className="form-group">
                                     <span className="text-danger">
@@ -118,7 +126,7 @@ export default function Login() {
                                 </div>
                             </form>
                             <div className="form-group">
-                                    <p>New User? <Link to="/SignUp">SignUp here</Link></p>
+                                    <p>New User? <Link class="sp" to="/SignUp">SignUp here</Link></p>
                             </div>
                         </div>
                     </div>

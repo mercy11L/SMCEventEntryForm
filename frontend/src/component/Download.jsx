@@ -8,8 +8,7 @@ import  "./css/download.css";
 
 const Download = () => {
   const location = useLocation();
-  const eventId = location.state?.eventId;
-  const Ename = location.state?.name;
+  const { eventId, name } = location.state || {};
   const navigate = useNavigate();
   const [loadingDocx, setLoadingDocx] = useState(false);
   const [loadingPdf, setLoadingPdf] = useState(false);
@@ -74,7 +73,7 @@ const Download = () => {
     <div className="card download-card">
       <h4 className="card-title">Download Event Report</h4>
       <p className="event-id">
-        <strong>Event Name:</strong> {Ename}
+        <strong>Event Name:</strong> {name}
       </p>
       <button
   className="btn btn-outline-primary download-btn"

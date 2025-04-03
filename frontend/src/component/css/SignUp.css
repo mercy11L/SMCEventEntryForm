@@ -54,4 +54,9 @@
     background: #005bb5; /* Slightly darker blue on hover */
     transform: scale(1.05);
   }
-  
+  .sp{
+    color:#6ec6ff;
+  }
+  .sp:hover{
+    color:#c0e0f5;
+  }

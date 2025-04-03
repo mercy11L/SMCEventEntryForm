@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import './css/Contact.css';
 import axios from "axios";
-import { logout,Alogout , isAdminAuthenticated } from './services/Auth';
+import { logout,Alogout , isAuthenticated,isAdminAuthenticated } from './services/Auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faBuilding, faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -57,6 +57,13 @@ const Contact = () => {
         });
     }
   };
+
+  if(!isAdminAuthenticated()){
+    navigate("/AdminLogin")
+}
+if(!isAuthenticated()){
+    navigate("/Login")
+}
 
   const logoutUser= ()=>{
           if(isAdminAuthenticated()){

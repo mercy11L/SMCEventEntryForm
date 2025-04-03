@@ -175,10 +175,10 @@ const handleChange = (e) => {
       const data = new FormData();
       for (const key in formData) {
         if (key === "selectedOptions" || key === "categories") {
-          data.append(key, JSON.stringify(formData[key]));  // Convert array to JSON string
+          data.append(key, JSON.stringify(formData[key]));  // convert array to JSON string
         }
         if (Array.isArray(formData[key])) {
-            // Append each file individually
+            // append each file individually
             formData[key].forEach((file, index) => {
                 if (file instanceof File) {
                     data.append(key, file);
@@ -210,13 +210,13 @@ const handleDynamicUpdate = (e) => {
 
   setFormData((prevData) => ({
     ...prevData,
-    [name]: value,  // Update organisedBy
-    selectedOptions: [], // Reset selected options when category changes
+    [name]: value,  // update organisedBy
+    selectedOptions: [], // reset selected options when category changes
   }));
 
   setErrors((prevErrors) => ({
     ...prevErrors,
-    [name]: "", // Remove error when a valid selection is made
+    [name]: "", // remove error when a valid selection is made
   }));
 };
 
@@ -269,7 +269,7 @@ const handleThemeChange = (selectedOption) => {
         <div className="form-row">
         <div className="form-group">
           <label htmlFor="eventDate">Start Date of the Event <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span></label>
-          <input type="date" id="eventDate" name="eventDate" value={formData.eventDate} onChange={handleChange} className="form-input" />
+          <input type="date" id="eventDate" name="eventDate" max={formData.endDate || ""}  value={formData.eventDate} onChange={handleChange} className="form-input" />
           {errors.eventDate && <p className="error-message">{errors.eventDate}</p>}
         </div>
         <div className="form-group">
@@ -511,7 +511,7 @@ const handleThemeChange = (selectedOption) => {
           </div>
 
           <div className="form-group">
-            <label>Captions for Geo-tagged pictures <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span><small><p>Please provide captions for the geo-tagged pictures in the same order as uploaded, separated by commas. If a picture has no caption, leave it blank</p></small></label>
+            <label>Captions for Geo-tagged pictures <span className="text-danger" style={{ fontSize: "1.2rem" }}>*</span><small><p>Please provide captions for the geo-tagged pictures in the same order as uploaded, separated by semicolon  . If a picture has no caption, leave it blank</p></small></label>
             <input type="text" name="geocap" onChange={handleChange} className="form-file" />
             {errors.geocap && <p className="error-message">{errors.geocap}</p>}
           </div>

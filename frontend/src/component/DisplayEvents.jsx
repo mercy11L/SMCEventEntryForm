@@ -15,8 +15,12 @@ export default function DisplayEvents() {
     useEffect(() => {
         axios.get("http://localhost:5000/events")
             .then((response) => {
-                setEvents(response.data);
-                setFilteredEvents(response.data); // Initialize with full list
+                const indexedEvents = response.data.map((event, index) => ({
+                    ...event,
+                    originalIndex: index + 1,
+                  }));
+                  setEvents(indexedEvents);
+                  setFilteredEvents(indexedEvents);
             })
             .catch((error) => {
                 console.error("Error fetching events:", error);
@@ -65,6 +69,7 @@ export default function DisplayEvents() {
                         <table className="event-table">
                             <thead>
                                 <tr>
+                                    <th>S.No</th>
                                     <th>Event Name</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
@@ -76,6 +81,7 @@ export default function DisplayEvents() {
                             <tbody>
                                 {filteredEvents.map((event, index) => (
                                     <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+                                        <td>{event.originalIndex}</td>
                                         <td>{event.name}</td>
                                         <td>{event.eventDate}</td>
                                         <td>{event.endDate}</td>

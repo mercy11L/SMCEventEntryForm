@@ -3,11 +3,11 @@ const router = express.Router();
 const path=require("path");
 const detModel = require("../models/DetsModel");
 const fs = require("fs");
-const mime = require('mime-types');
 const { JSDOM } = require("jsdom");
 const numbering = require("../utils/numbering");
 const styles = require("../utils/styles");
 const { formatDate } = require("../utils/dateHelpers");
+const { getFileType } = require("../utils/fileTypeHelper");
 const { exec } = require("child_process");
 const {Document,Paragraph,ImageRun,PageBreak,AlignmentType,WidthType,TextRun,Packer,Table,Header,Footer, TableCell, TableRow} = require("docx");
 
@@ -19,11 +19,6 @@ router.get("/download/:id", async (req, res) => {
 
         if (!event) {
             return res.status(404).json({ message: "Event not found" });
-        }
-        function getFileType(fileName) {
-            console.log(fileName)
-            console.log(path.extname(fileName).toLowerCase().replace(".", ""))
-            return path.extname(fileName).toLowerCase().replace(".", "");
         }
 
         function convertHtmlToDocx(html) {
@@ -137,7 +132,7 @@ router.get("/download/:id", async (req, res) => {
         const outcomeParagraphs = convertHtmlToDocx(event.outcome);
         
         const eventDetails = [
-            { label: "Academic Year", value: "2023 – 2024" },
+            { label: "Academic Year", value: "2025 – 2026" },
             { label: "Name of the Event", value: event.name },
             { label: "Organised By", value: event.selectedOptions.join("\n") },
             { label: "Date", value: formatDate(event.eventDate) },
@@ -255,7 +250,7 @@ router.get("/download/:id", async (req, res) => {
 
         const geocap= event.geocap;
         const geoImagesWithCaptions = event.GeoFilePaths.map((filePath, index) => {
-            const captionsArray = geocap ? geocap.split(',') : [];
+            const captionsArray = geocap ? geocap.split(';') : [];
             const caption = captionsArray[index]?.trim() || "";
 
             return new Paragraph({

@@ -16,8 +16,8 @@ const [inputs,setInputs] = useState({
 });
     
 const initialStateErrors={
-    email:{required:false},
-        password:{required:false},
+    email:{required:false, invalid:false},
+        password:{required:false, length:false},
         cpassword:{required:false , same:false},
         name:{required:false},
         custom_error:null
@@ -35,16 +35,16 @@ const handleInput = (event) => {
         [name]: value
     }));
 
-    // Clear the error when user starts typing
+    // clear error when user starts typing
     setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: { required: false, same: false }, // Reset validation errors
-        custom_error: null // Clear custom error too
+        [name]: { required: false, same: false }, // reset validation errors
+        custom_error: null // clear custom error too
     }));
 };
 
 //const navigate = useNavigate();
-
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const handleSubmit=async (event)=> {
     event.preventDefault();
     let errors= initialStateErrors;
@@ -57,9 +57,17 @@ const handleSubmit=async (event)=> {
         errors.email.required=true;
         hasError=true;
     }
+    else if (!emailRegex.test(inputs.email)) {
+        errors.email.invalid = true;
+        hasError = true;
+    }
     if(inputs.password===""){
         errors.password.required=true;
         hasError=true;
+    }
+    if (inputs.password.length <= 5) {
+        errors.password.length = true;
+        hasError = true;
     }
     if(inputs.cpassword===""){
         errors.cpassword.required=true;
@@ -120,12 +128,18 @@ if(isAuthenticated()){
                         {errors.email.required ? (<span className="text-danger" >
                             Email is required.
                         </span>) : null}
+                        {errors.email.invalid ? (<span className="text-danger" >
+                            Invalid email format
+                        </span>) : null}
                      </div>
                      <div className="form-group">
                         <label htmlFor="exampleInputPassword1" className="text-uppercase">Password</label>
                         <input  className="form-control" type="password" onChange={handleInput} name="password" id=""/>
                         {errors.password.required?(<span className="text-danger" >
                             Password is required.
+                        </span>):null}
+                        {errors.password.length?(<span className="text-danger" >
+                            Password must be greater than 5 characters
                         </span>):null}
                      </div>
                      <div className="form-group">
@@ -156,7 +170,7 @@ if(isAuthenticated()){
                      </div>
                      <div className="clearfix"></div>
                      <div className="form-group">
-                       <p>Already have account ? Please <Link to="/Login">Login</Link></p>
+                       <p>Already have account ? Please <Link class="sp" to="/Login">Login</Link></p>
                      </div>
                      </form>
                   </div>
