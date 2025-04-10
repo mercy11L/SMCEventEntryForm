@@ -58,13 +58,6 @@ const Contact = () => {
     }
   };
 
-  if(!isAdminAuthenticated()){
-    navigate("/AdminLogin")
-}
-if(!isAuthenticated()){
-    navigate("/Login")
-}
-
   const logoutUser= ()=>{
           if(isAdminAuthenticated()){
               Alogout();

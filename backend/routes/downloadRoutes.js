@@ -26,7 +26,7 @@ router.get("/download/:id", async (req, res) => {
             const body = document.body;
             const paragraphs = [];
         
-            function processNode(node, styles = {}) {
+            function processNode(node, styles = {}) {      //format+text
                 const runs = [];
         
                 node.childNodes.forEach((child, index) => {

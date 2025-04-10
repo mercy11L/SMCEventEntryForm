@@ -1,6 +1,7 @@
 export const centres = [
   {
     options: [
+      { value: "All Centres", label: "All Centres" },
       { value: 'Internal Quality Assurance Cell (IQAC)', label: 'Internal Quality Assurance Cell (IQAC)' },
       { value: "Office of the Deans of Student Affairs / Students' Union", label: "Office of the Deans of Student Affairs / Students' Union" },
       { value: 'Office of the Deans of Academic Affairs', label: 'Office of the Deans of Academic Affairs' },
@@ -33,6 +34,7 @@ export const centres = [
 export const clubs = [
   {
     options: [
+      { value: "All Clubs", label: "All Clubs" },
       { value: 'French Club – Cercle de Francophiles', label: 'French Club – Cercle de Francophiles' },
       { value: 'Mime & Street Theatre', label: 'Mime & Street Theatre' },
       { value: 'Classical Dance', label: 'Classical Dance' },
@@ -63,6 +65,7 @@ export const clubs = [
 export const units = [
   {
     options: [
+      { value: "All Units", label: "All Units" },
       { value: 'Physical Education', label: 'Physical Education' },
       { value: 'National Cadet Corps (NCC)', label: 'National Cadet Corps (NCC)' },
       { value: 'National Service Scheme (NSS)', label: 'National Service Scheme (NSS)' },
@@ -76,6 +79,7 @@ export const units = [
 export const departments = [
   {
     options: [
+      { value: "All Departments", label: "All Departments" },
       { value: 'BioInformatics', label: 'BioInformatics' },
       { value: 'Biotechnology', label: 'Biotechnology' },
       { value: 'Botany', label: 'Botany' },

@@ -4,7 +4,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import Header from "./Header.jsx";
 import "./css/DisplayEvents.css";
 import { isAdminAuthenticated, Alogout } from "./services/Auth.js";
-import { FaSearch } from "react-icons/fa"; // Import search icon
+import { FaSearch, FaTrash } from "react-icons/fa"; // Import search and delete icons
 
 export default function DisplayEvents() {
     const [events, setEvents] = useState([]);
@@ -18,9 +18,9 @@ export default function DisplayEvents() {
                 const indexedEvents = response.data.map((event, index) => ({
                     ...event,
                     originalIndex: index + 1,
-                  }));
-                  setEvents(indexedEvents);
-                  setFilteredEvents(indexedEvents);
+                }));
+                setEvents(indexedEvents);
+                setFilteredEvents(indexedEvents);
             })
             .catch((error) => {
                 console.error("Error fetching events:", error);
@@ -36,12 +36,25 @@ export default function DisplayEvents() {
         navigate("/AdminLogin");
     };
 
-    // Handle search when clicking icon
     const handleSearch = () => {
         const filtered = events.filter(event =>
             event.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
         setFilteredEvents(filtered);
+    };
+
+    const handleDelete = (id) => {
+        if (window.confirm("Are you sure you want to delete this event?")) {
+            axios.delete(`http://localhost:5000/events/${id}`)
+                .then(() => {
+                    const updatedEvents = events.filter(event => event._id !== id);
+                    setEvents(updatedEvents);
+                    setFilteredEvents(updatedEvents);
+                })
+                .catch((error) => {
+                    console.error("Error deleting event:", error);
+                });
+        }
     };
 
     return (
@@ -76,6 +89,7 @@ export default function DisplayEvents() {
                                     <th>Coordinator</th>
                                     <th>Contact Number</th>
                                     <th>More Info</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,6 +105,13 @@ export default function DisplayEvents() {
                                             <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
                                                 View Details
                                             </a>
+                                        </td>
+                                        <td>
+                                            <FaTrash 
+                                                className="delete-icon" 
+                                                onClick={() => handleDelete(event._id)} 
+                                                style={{ color: "red", cursor: "pointer" }}
+                                            />
                                         </td>
                                     </tr>
                                 ))}

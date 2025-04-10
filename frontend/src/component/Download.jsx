@@ -77,7 +77,7 @@ const Download = () => {
       </p>
       <button
   className="btn btn-outline-primary download-btn"
-  disabled={loadingDocx}
+  disabled={loadingDocx || loadingPdf}
   onClick={() => handleDownload("docx")}
 >
   {loadingDocx ? <span className="spinner-border spinner-border-sm me-2"></span> : null}
@@ -92,7 +92,7 @@ const Download = () => {
 </button> */}
         <button
               className="btn btn-primary download-btn"
-              disabled={loadingPdf}
+              disabled={loadingDocx || loadingPdf}
               onClick={() => handleDownload("pdf")}>
               {loadingPdf ? <span className="spinner-border spinner-border-sm me-2"></span> : null}
               Download PDF Report
