@@ -16,7 +16,7 @@ export default function Header(props) {
         <Link to="/" className="nav-link">Home</Link>
           <Link to="/About" className="nav-link">About</Link>
           {/* <Link to="/services" className="nav-link">Services</Link> */}
-          <Link to="/contact" className="nav-link">Contact</Link>
+          <Link to="/contact" className="nav-link">Contact</Link> 
           {!isAuthenticated() && !isAdminAuthenticated() ? (
                 <>
                     <Link to="/Login" className="nav-link">Login</Link>
