@@ -88,7 +88,7 @@ export default function ViewReport() {
               </thead>
               <tbody>
                 {filteredEvents.map((event, index) => (
-                  <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+                  <tr key={event.user_id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
                     <td>{event.originalIndex}</td>
                     <td>{event.name}</td>
                     <td>{event.eventDate}</td>
@@ -96,7 +96,7 @@ export default function ViewReport() {
                     <td>{event.organisedBy}</td>
                     <td>{event.theme}</td>
                     <td>
-                      <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
+                      <a href={`http://localhost:5000/files/Event_Report_${event.Eid}.pdf`} target="_blank" rel="noopener noreferrer">
                         View Details
                       </a>
                     </td>

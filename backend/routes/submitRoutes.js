@@ -1,10 +1,9 @@
 const express = require("express");
 const multer=require("multer");
 //const sharp = require("sharp"); -> helps to convert one file type to another
-const detModel = require("../models/DetsModel");
-const userModel = require("../models/UserModel");
 const router = express.Router();
 const path=require("path");
+const db = require("../db");
 
 router.use(express.json()); // Ensure JSON is parsed
 router.use(express.urlencoded({ extended: true }));
@@ -37,37 +36,66 @@ router.post('/submit', uploadHandler, async (req, res) => {
         const selectedOptions = req.body.selectedOptions ? JSON.parse(req.body.selectedOptions) : [];
         const categories = req.body.categories ? JSON.parse(req.body.categories) : [];
     
-        const { user_id, num, name, lvl, mode, eventDate, organisedBy, nc, endDate, venue, isOrganised, nofpart, theme, desc, obj, outcome, geocap, signcap } = req.body;
+        const {
+            user_id, num, name, lvl, mode, eventDate, organisedBy, nc, endDate,
+            venue, isOrganised, nofpart, theme, desc, obj, outcome, geocap, signcap
+        } = req.body;
+
         const files = req.files;
 
-        if (!files) {
-            return res.status(400).json({ message: "No files uploaded." });
-        }
-        const userExists = await userModel.findById(user_id);
-        if (!userExists) {
+        // Validate user ID
+        const [user] = await db.query("SELECT idusers FROM users WHERE idusers = ?", [user_id]);
+        if (user.length === 0) {
             return res.status(400).json({ message: "Invalid user ID." });
         }
 
-        const inviteFilePaths = files.invite ? files.invite.map(file => file.filename) : [];
-        const ptlistFilePaths = files.ptlist ? files.ptlist.map(file => file.filename) : [];
-        const signatureFilePath = files.signature ? files.signature[0].filename : null;
-        const certFilePath = files.cert ? files.cert[0].filename : null;
-        const GeoFilePaths = files.geo ? files.geo.map(file => file.filename) : [];
-        const fbackFilePaths = files.fback ? files.fback.map(file => file.filename) : [];
-        
-        const newDet = new detModel({
-            user: user_id, num, name, lvl, mode, eventDate, organisedBy,selectedOptions, venue, nc,
-            endDate,isOrganised,categories, nofpart, theme, desc, obj, outcome, geocap,signcap,
-            GeoFilePaths, inviteFilePaths, ptlistFilePaths, signatureFilePath,certFilePath,fbackFilePaths
-        });
-        
-        await newDet.save();
-        res.status(201).json({ message: "Data submitted successfully", id: newDet._id });
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({ message: e.message });
+        const data = {
+            user_id,
+            num,
+            name,
+            lvl,
+            mode,
+            eventDate,
+            organisedBy,
+            selectedOptions: JSON.stringify(selectedOptions),
+            venue,
+            nc,
+            endDate,
+            isOrganised,
+            categories: JSON.stringify(categories),
+            nofpart,
+            theme,
+            description: desc,
+            objective: obj,
+            outcome,
+            geocap,
+            signcap,
+            geo_files: JSON.stringify(files.geo?.map(f => f.filename) || []),
+            invite_files: JSON.stringify(files.invite?.map(f => f.filename) || []),
+            ptlist_files: JSON.stringify(files.ptlist?.map(f => f.filename) || []),
+            signature_file: files.signature?.[0]?.filename || null,
+            cert_file: files.cert?.[0]?.filename || null,
+            fback_files: JSON.stringify(files.fback?.map(f => f.filename) || [])
+        };
+
+        const insertQuery = `
+            INSERT INTO event_details 
+            (user_id, num, name, lvl, mode, eventDate, organisedBy, selectedOptions, venue, nc,
+             endDate, isOrganised, categories, nofpart, theme, \`desc\`, obj, outcome,
+             geocap, signcap, GeoFilePaths, inviteFilePaths, ptlistFilePaths, signatureFilePath, certFilePath, fbackFilePaths)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+
+        const values = Object.values(data);
+
+        const [result] = await db.query(insertQuery, values);
+
+        res.status(201).json({ message: "Data submitted successfully", id: result.insertId });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
     }
 });
-
 
 module.exports = router;

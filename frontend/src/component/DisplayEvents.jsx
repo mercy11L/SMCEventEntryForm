@@ -47,7 +47,7 @@ export default function DisplayEvents() {
         if (window.confirm("Are you sure you want to delete this event?")) {
             axios.delete(`http://localhost:5000/events/${id}`)
                 .then(() => {
-                    const updatedEvents = events.filter(event => event._id !== id);
+                    const updatedEvents = events.filter(event => event.Eid !== id);
                     setEvents(updatedEvents);
                     setFilteredEvents(updatedEvents);
                 })
@@ -94,7 +94,7 @@ export default function DisplayEvents() {
                             </thead>
                             <tbody>
                                 {filteredEvents.map((event, index) => (
-                                    <tr key={event._id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
+                                    <tr key={event.user_id} className={index % 2 === 0 ? "even-row" : "odd-row"}>
                                         <td>{event.originalIndex}</td>
                                         <td>{event.name}</td>
                                         <td>{event.eventDate}</td>
@@ -102,14 +102,14 @@ export default function DisplayEvents() {
                                         <td>{event.nc}</td>
                                         <td>{event.num}</td>
                                         <td>
-                                            <a href={`http://localhost:5000/files/Event_Report_${event._id}.pdf`} target="_blank" rel="noopener noreferrer">
+                                            <a href={`http://localhost:5000/files/Event_Report_${event.Eid}.pdf`} target="_blank" rel="noopener noreferrer">
                                                 View Details
                                             </a>
                                         </td>
                                         <td>
                                             <FaTrash 
                                                 className="delete-icon" 
-                                                onClick={() => handleDelete(event._id)} 
+                                                onClick={() => handleDelete(event.Eid)} 
                                                 style={{ color: "red", cursor: "pointer" }}
                                             />
                                         </td>

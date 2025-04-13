@@ -11,3 +11,10 @@ const reportWebVitals = onPerfEntry => {
 };
 
 export default reportWebVitals;
+
+// installed npm i gh pages --save-dev
+// added:
+// "homepage": "https://(github username).github.io/(repo name)"
+// "predeploy": "npm run build"
+// "deploy": "gh-pages -d build"
+// in package-json in frontend folder

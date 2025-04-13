@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const path=require("path");
-const detModel = require("../models/DetsModel");
 const fs = require("fs");
 const { JSDOM } = require("jsdom");
 const numbering = require("../utils/numbering");
@@ -9,17 +8,20 @@ const styles = require("../utils/styles");
 const { formatDate } = require("../utils/dateHelpers");
 const { getFileType } = require("../utils/fileTypeHelper");
 const { exec } = require("child_process");
+const db = require('../db');
 const {Document,Paragraph,ImageRun,PageBreak,AlignmentType,WidthType,TextRun,Packer,Table,Header,Footer, TableCell, TableRow} = require("docx");
 
 router.get("/download/:id", async (req, res) => {
     try {
-        const eventId = req.params.id;
         const fileType = req.query.type || "docx";
-        const event = await detModel.findById(eventId);
-
-        if (!event) {
-            return res.status(404).json({ message: "Event not found" });
+        const [rows] = await db.query('SELECT * FROM event_details WHERE Eid = ?', [req.params.id]);
+    
+        if (rows.length === 0) {
+            return res.status(404).send('Event not found');
         }
+
+        const event = rows[0];
+        const eventId = event.Eid;
 
         function convertHtmlToDocx(html) {
             const { document } = new JSDOM(`<!DOCTYPE html><body>${html}</body>`).window;

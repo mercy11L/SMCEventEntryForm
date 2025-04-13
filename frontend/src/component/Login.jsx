@@ -64,20 +64,21 @@ export default function Login() {
             const { email,password }=inputs;
             await axios.post("http://localhost:5000/Login",{email, password })  
             .then((response) => {
+                console.log("Response:", response.data);
                 storeUserData(response.data.token);
             })
             .catch((error) => {
-                //setErrors({ custom_error: error.response?.data.message || "Something went wrong" });
-                if (error.response.data.message === "User details not found." || error.response.data.message === "Invalid password.") {
-                    setErrors({...errors,custom_error:"Invalid User Credentials."});
-                }
-                else if (error.response.data.message === "Server error."){
-                    setErrors({...errors,custom_error:error.response.data.message})
+                console.log("Login error:", error);
+                if (error.response?.data?.message === "User details not found." || error.response?.data?.message === "Invalid password.") {
+                    setErrors({...errors, custom_error:"Invalid User Credentials."});
+                } else {
+                    setErrors({...errors, custom_error:"Something went wrong."});
                 }
             })
             .finally(() => {
+                console.log("Login complete");
                 setLoading(false);
-            });
+            });            
         }
         else{
             setErrors({...errors}); 
