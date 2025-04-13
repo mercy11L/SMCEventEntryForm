@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/SMCEventEntryForm/static/css/main.573168e7.css",
-    "main.js": "/SMCEventEntryForm/static/js/main.51156af4.js",
+    "main.js": "/SMCEventEntryForm/static/js/main.32d35cc8.js",
     "static/media/s3.jpg": "/SMCEventEntryForm/static/media/s3.92a7b39363103c5fd841.jpg",
     "static/media/s1.jpg": "/SMCEventEntryForm/static/media/s1.c40b7b109b2f7842823f.jpg",
     "static/media/s2.jpg": "/SMCEventEntryForm/static/media/s2.ad97e56c119501129e55.jpg",
     "index.html": "/SMCEventEntryForm/index.html",
     "main.573168e7.css.map": "/SMCEventEntryForm/static/css/main.573168e7.css.map",
-    "main.51156af4.js.map": "/SMCEventEntryForm/static/js/main.51156af4.js.map"
+    "main.32d35cc8.js.map": "/SMCEventEntryForm/static/js/main.32d35cc8.js.map"
   },
   "entrypoints": [
     "static/css/main.573168e7.css",
-    "static/js/main.51156af4.js"
+    "static/js/main.32d35cc8.js"
   ]
 }
