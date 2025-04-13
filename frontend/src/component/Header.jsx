@@ -9,7 +9,7 @@ export default function Header(props) {
     <header className="header">
       <div className="header-container">
         <div className="logo" onClick={() => navigate("/")}>
-          <img src= {`${process.env.PUBLIC_URL}/code_image/s_logo.png`} alt="Logo" className="header-logo" />
+          <img src="code_image/s_logo.png" alt="Logo" className="header-logo" />
         </div>
         <div><h2>STELLA MARIS COLLEGE (Autonomous)</h2></div>
         <nav className="header-nav">
