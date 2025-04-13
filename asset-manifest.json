@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/final_yr_project/static/css/main.75f2f6fc.css",
-    "main.js": "/final_yr_project/static/js/main.4faf788e.js",
-    "static/media/s3.jpg": "/final_yr_project/static/media/s3.92a7b39363103c5fd841.jpg",
-    "static/media/s1.jpg": "/final_yr_project/static/media/s1.c40b7b109b2f7842823f.jpg",
-    "static/media/s2.jpg": "/final_yr_project/static/media/s2.ad97e56c119501129e55.jpg",
-    "index.html": "/final_yr_project/index.html",
-    "main.75f2f6fc.css.map": "/final_yr_project/static/css/main.75f2f6fc.css.map",
-    "main.4faf788e.js.map": "/final_yr_project/static/js/main.4faf788e.js.map"
+    "main.css": "/SMCEventEntryForm/static/css/main.573168e7.css",
+    "main.js": "/SMCEventEntryForm/static/js/main.eff0f291.js",
+    "static/media/s3.jpg": "/SMCEventEntryForm/static/media/s3.92a7b39363103c5fd841.jpg",
+    "static/media/s1.jpg": "/SMCEventEntryForm/static/media/s1.c40b7b109b2f7842823f.jpg",
+    "static/media/s2.jpg": "/SMCEventEntryForm/static/media/s2.ad97e56c119501129e55.jpg",
+    "index.html": "/SMCEventEntryForm/index.html",
+    "main.573168e7.css.map": "/SMCEventEntryForm/static/css/main.573168e7.css.map",
+    "main.eff0f291.js.map": "/SMCEventEntryForm/static/js/main.eff0f291.js.map"
   },
   "entrypoints": [
-    "static/css/main.75f2f6fc.css",
-    "static/js/main.4faf788e.js"
+    "static/css/main.573168e7.css",
+    "static/js/main.eff0f291.js"
   ]
 }
